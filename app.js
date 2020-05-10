@@ -1,16 +1,26 @@
 "use strict"; // strictモードを利用し、曖昧な実装を防止
+const memo = new Map();
+// 0と1の場合の戻り値を定義
+memo.set(0, 0);
+memo.set(1, 1);
+
+/**
+ * フィボナッチ数列取得関数
+ * @param {*} n フィボナッチ数列を取得したい数値
+ */
 function fib(n) {
-  if (n === 0) {
-    // 0の時は0を戻す
-    return 0;
-  } else if (n === 1) {
-    // 1の時は1を戻す
-    return 1;
+  // 配列に登録されている場合、その値を戻す
+  if (memo.has(n)) {
+    return memo.get(n);
   }
-  // 1つ前の数、2つ前の数を足しあわせた結果を戻す
-  // 再帰：関数定義の中で、自分自身を呼び出す
-  //        この実装では、return 0 or return 1 が戻るまで呼出しが繰り返されるので指数オーダーになる
-  return fib(n - 1) + fib(n - 2);
+
+  // 1つ前の数、2つ前の数を足しあわせた結果を取得し、引数に紐づけてmemoに登録
+  // O(n)：nに対して、n倍処理時間がかかる線形オーダーで実施
+  const value = fib(n - 1) + fib(n - 2);
+  memo.set(n, value);
+
+  // 登録した値を戻す
+  return value;
 }
 
 // 40個までやる
